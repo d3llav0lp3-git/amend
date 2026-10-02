@@ -49,4 +49,4 @@ Right-click the Amend tray icon:
 
 ## 📄 License
 
-Define the project's license here (e.g., MIT) and add a `LICENSE` file.
+[Read the License](LICENSE)
