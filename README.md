@@ -9,7 +9,7 @@
   Closes to tray, uses fewer resources, and stays out of your way.
 </p>
 
-> ⚠️ ** Amend v.1.0.0 in development
+> ⚠️ **Amend v.1.0.0 in development
 
 ---
 
