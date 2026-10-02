@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="logo_Amend.png" width="128" alt="Amend Logo" />
+  <img src="logo_amend.png" width="128" alt="Amend Logo" />
 </p>
 
 <h1 align="center">Amend</h1>
