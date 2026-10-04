@@ -19,6 +19,106 @@
 //  o seu por URL/arquivo e ele aparece marcado como NAO OFICIAL.
 // =====================================================================
 (function() {
+
+    // ------------------------------------------------------------ idioma
+    //
+    // O painel é um arquivo baixável, então não pode assumir português. O app
+    // injeta o idioma do sistema (mesma fonte que a bandeja usa).
+    var IDIOMA = (window.__AMEND_IDIOMA === 'en') ? 'en' : 'pt';
+
+    var T = {
+        pt: {
+            plugins: 'Plugins',
+            buscando: 'Buscando...',
+            busca: 'Buscar plugins...',
+            instalar: 'Instalar',
+            instalado: 'Instalado',
+            remover: 'Remover',
+            voltar: 'Voltar p/ v',
+            atualizar: 'Atualizar',
+            desinstalar: 'Desinstalar sistema',
+            versao: 'Sistema de plugins',
+            add: 'Adicionar plugin',
+            url: 'URL de um plugin (.js) — não oficial',
+            instalados: 'Instalados',
+            catalogo: 'Catálogo oficial',
+            vazio_cat: 'Catálogo vazio ou indisponível offline.',
+            vazio_inst: 'Nenhum plugin instalado. Baixe do catálogo oficial ou use o campo acima com a URL de um plugin.',
+            ligar: 'Ligar', desligar: 'Desligar',
+            att_p: 'Reverter para a versão anterior',
+            ms_atualizado: 'Plugin atualizado.', ms_removido: 'Removido.',
+            nada_encontrado: 'Nada encontrado para',
+            desinstalar_titulo: 'Desinstalar o sistema de plugins?',
+            desinstalar_txt: 'Os plugins já instalados continuam nos arquivos, mas o painel deixa de funcionar até você instalar de novo.',
+            nada: 'Nada encontrado para',
+            stats_inst: t('stats_inst'),
+            stats_ativos: t('stats_ativos'),
+            stats_cat: t('stats_cat'),
+            oficial: 'oficial',
+            nao_oficial: 'não oficial',
+            atualização: 'ATUALIZAÇÃO',
+            upd: 'Atualização',
+            erro_plugin: 'Este plugin falhou ao carregar',
+            instalar_titulo: 'Instalar plugin',
+            quer_instalar: 'quer instalar. O que ele faz:',
+            so_pagina: t('so_pagina'),
+            pede_acesso: t('pede_acesso'),
+            cancel: 'Cancelar',
+            aviso: 'Atenção',
+            perm_desconhecida: 'Permissão desconhecida',
+            instalado_ok: 'Instalado: ',
+            fora_catalogo: t('fora_catalogo'),
+            revertido: t('revertido'),
+            nao_oficial_aviso: 'Vem de fora do catálogo oficial.'
+        },
+        en: {
+            plugins: 'Plugins',
+            buscando: 'Loading...',
+            busca: 'Search plugins...',
+            instalar: 'Install',
+            instalado: 'Installed',
+            remover: 'Remove',
+            voltar: 'Back to v',
+            atualizar: 'Update',
+            desinstalar: 'Uninstall system',
+            versao: 'Plugin system',
+            add: 'Add plugin',
+            url: 'Plugin URL (.js) — unofficial',
+            instalados: 'Installed',
+            catalogo: 'Official catalog',
+            vazio_cat: 'Catalog empty or unavailable offline.',
+            vazio_inst: 'No plugins installed. Download from the official catalog or paste a plugin URL above.',
+            ligar: 'Turn on', desligar: 'Turn off',
+            att_p: 'Go back to the previous version',
+            ms_atualizado: 'Plugin updated.', ms_removido: 'Removed.',
+            nada_encontrado: 'Nothing found for',
+            desinstalar_titulo: 'Uninstall the plugin system?',
+            desinstalar_txt: 'Installed plugins stay in the files, but the panel stops working until you install it again.',
+            nada: 'Nothing found for',
+            stats_inst: 'installed',
+            stats_ativos: 'active',
+            stats_cat: 'in catalog',
+            oficial: 'official',
+            nao_oficial: 'unofficial',
+            atualização: 'UPDATE',
+            upd: 'Update',
+            erro_plugin: 'This plugin failed to load',
+            instalar_titulo: 'Install plugin',
+            quer_instalar: 'wants to install. What it does:',
+            so_pagina: 'This plugin only touches the Discord page.',
+            pede_acesso: 'This plugin asks for access to:',
+            cancel: 'Cancel',
+            aviso: 'Warning',
+            perm_desconhecida: 'Unknown permission',
+            instalado_ok: 'Installed: ',
+            fora_catalogo: 'Installed. It came from outside the official catalog.',
+            revertido: 'Reverted.',
+            nao_oficial_aviso: 'Comes from outside the official catalog.'
+        }
+    };
+
+    function t(chave) { return (T[IDIOMA] || T.pt)[chave] || chave; }
+    window.__amendIdioma = t;
     if (window.__amendPluginsOn) return;
     window.__amendPluginsOn = true;
 
@@ -181,6 +281,33 @@
       font-family:Consolas,monospace; word-break:break-all; }
     .ap-ok { font-size:12px; color:#23a55a; padding:6px 0; }
 
+    /* ---- grid de cards do catalogo ---- */
+    .ap-grid { display:grid; grid-template-columns:repeat(2,1fr); gap:10px; }
+    @media (max-width:520px) { .ap-grid { grid-template-columns:1fr; } }
+
+    .ap-card { background:#2b2d31; border:1px solid rgba(255,255,255,.06);
+      border-radius:8px; padding:12px; display:flex; flex-direction:column;
+      gap:8px; min-height:118px; transition:border-color .12s, background .12s; }
+    .ap-card:hover { background:#313338; border-color:#3f4247; }
+    .ap-card-topo { display:flex; align-items:flex-start; gap:9px; }
+    .ap-icone { width:34px; height:34px; border-radius:9px; flex:none;
+      display:flex; align-items:center; justify-content:center;
+      font-size:16px; font-weight:700; color:#fff;
+      background:linear-gradient(135deg,#5865F2,#eb459e); }
+    .ap-icone.mini { width:22px; height:22px; border-radius:6px; font-size:11px; }
+    .ap-card-info { flex:1; min-width:0; }
+    .ap-card-nome { font-size:14px; color:#f2f3f5; font-weight:500;
+      overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+    .ap-card-ver { font-size:11px; color:#80848e; margin-top:1px; }
+    .ap-card-desc { font-size:12px; color:#b5bac1; line-height:1.45;
+      flex:1; overflow:hidden; display:-webkit-box; -webkit-line-clamp:2;
+      -webkit-box-orient:vertical; }
+    .ap-card-pe { display:flex; align-items:center; gap:6px; }
+    .ap-card .ap-btn-mini { flex:1; height:30px; }
+    .ap-card-pe .ap-ofi, .ap-card-pe .ap-naoofi { margin-left:auto; }
+
+    .ap-card[data-off="1"] { opacity:.5; }
+
     .ap-rodape { display:flex; align-items:center; gap:8px; padding:10px 16px;
       border-top:1px solid rgba(255,255,255,.06); }
     .ap-rodape-txt { flex:1; font-size:11px; color:#80848e; }
@@ -295,9 +422,9 @@
             (p.manifesto.autor ? ' — ' + p.manifesto.autor : '')));
         var rm = el('button', 'ap-btn2 perigo', 'Remover');
         rm.onclick = function() {
-            ipc('remover', { id: p.id })
+            ipc('plugins_remover', { id: p.id })
                 .then(function() { return carregar(); })
-                .then(function() { montar(); })
+                .then(function() { desenhar(); })
                 .catch(function(e) { msg(String(e), 'erro'); });
         };
         row.appendChild(info);
@@ -319,9 +446,9 @@
         if (!jaTem) {
             b.onclick = function() {
                 b.disabled = true; b.textContent = 'Baixando...';
-                ipc('instalarUrl', { u: c.url })
+                ipc('plugins_instalar_url', { url: c.url })
                     .then(function() { return carregar(); })
-                    .then(function() { msg('Instalado: ' + c.nome, 'ok'); montar(); })
+                    .then(function() { msg(t('instalado_ok') + c.nome, 'ok'); desenhar(); })
                     .catch(function(e) { msg(String(e), 'erro'); b.disabled = false; b.textContent = 'Instalar'; });
             };
         }
@@ -329,139 +456,12 @@
         return row;
     }
 
-    function montar() {
-        painel.innerHTML = '';
-        var topo = el('div', 'ap-topo');
-        topo.appendChild(el('h2', null, 'Plugins do Amend'));
-        var x = el('button', 'ap-x', '×');
-        x.onclick = fechar;
-        topo.appendChild(x);
-        painel.appendChild(topo);
-
-        var corpo = el('div', 'ap-corpo');
-
-        // --- instalar de fora do catalogo ---
-        corpo.appendChild(el('div', 'ap-secao', 'Adicionar plugin'));
-        corpo.appendChild(el('div', 'ap-aviso',
-            'Plugins de fora do catálogo oficial NÃO são revisados pelo autor do Amend. ' +
-            'Eles rodam com acesso à sua sessão do Discord — instale apenas o que você confia.'));
-        var linha = el('div', 'ap-linha');
-        var input = el('input', 'ap-input');
-        input.placeholder = 'https://github.com/.../meu-plugin.js';
-        var bUrl = el('button', 'ap-btn2', 'Instalar');
-        bUrl.onclick = function() {
-            var u = input.value.trim();
-            if (!u) return;
-            bUrl.disabled = true; bUrl.textContent = '...';
-            ipc('instalarUrl', { u: u })
-                .then(function() { return carregar(); })
-                .then(function() { msg('Instalado (não oficial).', 'ok'); montar(); })
-                .catch(function(e) { msg(String(e), 'erro'); bUrl.disabled = false; bUrl.textContent = 'Instalar'; });
-        };
-        input.onkeydown = function(e) { e.stopPropagation(); if (e.key === 'Enter') bUrl.click(); };
-        linha.appendChild(input); linha.appendChild(bUrl);
-        corpo.appendChild(linha);
-        corpo.appendChild(el('div', 'ap-msg'));
-
-        // --- instalados ---
-        corpo.appendChild(el('div', 'ap-secao', 'Instalados (' + instalado.length + ')'));
-        if (!instalado.length) {
-            corpo.appendChild(el('div', 'ap-vazio', 'Nenhum plugin instalado ainda.'));
-        } else {
-            instalado.forEach(function(p) { corpo.appendChild(itemInstalado(p)); });
-        }
-
-        // --- catalogo oficial ---
-        corpo.appendChild(el('div', 'ap-secao', 'Catálogo oficial'));
-        var divCat = el('div');
-        if (!catalogo.length) {
-            divCat.appendChild(el('div', 'ap-vazio',
-                'Catálogo ainda não baixado. Clique em atualizar (precisa de internet).'));
-        } else {
-            catalogo.forEach(function(c) { divCat.appendChild(itemCatalogo(c)); });
-        }
-        corpo.appendChild(divCat);
-
-        var upd = el('div', 'ap-linha');
-        upd.style.marginTop = '14px';
-        var bUpd = el('button', 'ap-btn2 sec', 'Atualizar catálogo');
-        bUpd.onclick = function() {
-            bUpd.disabled = true; bUpd.textContent = 'Atualizando...';
-            ipc('catalogo', {})
-                .then(function(n) { return carregar().then(function(){ return n; }); })
-                .then(function(n) { msg(n + ' plugin(s) no catálogo.', 'ok'); montar(); })
-                .catch(function(e) { msg(String(e) + ' — usando cache.', 'erro'); montar(); });
-        };
-        upd.appendChild(bUpd);
-        corpo.appendChild(upd);
-
-        painel.appendChild(corpo);
-    }
-
-    function carregar() {
-        if (!temIpc()) return Promise.resolve();
-        return Promise.all([
-            ipc('lista').then(function(r) { instalado = r || []; }).catch(function() {}),
-            ipc('catalogo').then(function(r) { catalogo = r || []; }).catch(function() {})
-        ]);
-    }
-
-    function montarIntro() {
-        painel.innerHTML = '';
-        var topo = el('div', 'ap-topo');
-        topo.appendChild(el('h2', null, 'Sistema de plugins'));
-        var x = el('button', 'ap-x', '\u00d7');
-        x.onclick = fechar;
-        topo.appendChild(x);
-        painel.appendChild(topo);
-
-        var corpo = el('div', 'ap-corpo');
-        var intro = el('div', 'ap-intro');
-        intro.innerHTML =
-            '<div class="ap-intro-icone"><svg viewBox="0 0 24 24">' +
-            '<path d="M20.5 11H19V7a2 2 0 0 0-2-2h-4V3.5a2.5 2.5 0 0 0-5 0V5H8a2 2 0 0 0-2 2v3.8h-1.5a2.5 2.5 0 0 0 0 5H6V20a2 2 0 0 0 2 2h4v1.5a2.5 2.5 0 0 0 5 0V22h4a2 2 0 0 0 2-2v-4.2h1.5a2.5 2.5 0 0 0 0-5z"/></svg></div>' +
-            '<h3>Plugins para o Amend</h3>' +
-            '<p>Plugins deixam o Amend do seu jeito: temas, exportar chats, atalhos ' +
-            'novos e o que mais vier.</p>' +
-            '<p><b style="color:#f2f3f5">Oficiais</b> — feitos e revisados pelo autor do Amend, ' +
-            'instalados com um clique.<br>' +
-            '<b style="color:#f2f3f5">De terceiros</b> — qualquer pessoa pode publicar; ' +
-            'vêm marcados como <b>não oficial</b>.</p>' +
-            '<div class="ap-risco"><b>Atenção:</b> plugins rodam dentro da página do Discord. ' +
-            'Um plugin mal feito pode acessar sua sessão. Instale apenas o que você confia.</div>';
-
-        var acoes = el('div', 'ap-acoes');
-        var nao = el('button', 'ap-btn2 sec', 'Agora não');
-        nao.onclick = fechar;
-        var sim = el('button', 'ap-btn2', 'Ativar sistema de plugins');
-        sim.onclick = function() {
-            sim.disabled = true; sim.textContent = 'Ativando...';
-            ipc('sistemaBaixar', { u: window.__AMEND_SISTEMA_URL || '' })
-                .then(function(v) {
-                    ATIVO = !!v; verificado = true;
-                    return carregar();
-                })
-                .then(function() { montar(); })
-                .catch(function(e) { msg(String(e), 'erro'); sim.disabled = false; sim.textContent = 'Ativar sistema de plugins'; });
-        };
-        acoes.appendChild(nao); acoes.appendChild(sim);
-        corpo.appendChild(intro); corpo.appendChild(acoes);
-        painel.appendChild(corpo);
-    }
-
-    /// Entra no Rust: o app avisa quando o sistema e ligado/desligado.
-    window.__amendPluginsAtivo = function(v) {
-        ATIVO = !!v; verificado = true;
-        if (overlay && !overlay.hidden) (ATIVO ? montar : montarIntro)();
-    };
-
-    // -------------------------------------------------------installed
     function desenharInstalados() {
         var box = el('div', 'ap-secao');
-        box.appendChild(el('h4', null, 'Instalados (' + instalado.length + ')'));
+        box.appendChild(el('h4', null, t(t('stats_inst')) + ' (' + instalado.length + ')'));
         if (!instalado.length) {
             box.appendChild(el('div', 'ap-vazio',
-                'Nenhum plugin instalado. Baixe do catálogo oficial ou use o campo acima com a URL de um plugin.'));
+                t('vazio_inst')));
             return box;
         }
         var norm = termo.toLowerCase().trim();
@@ -478,39 +478,39 @@
             var info = el('div', 'ap-info');
             var nome = el('div', 'ap-nome');
             nome.appendChild(document.createTextNode(p.nome));
-            if (p.oficial) nome.appendChild(el('span', 'ap-ofi', 'oficial'));
-            else nome.appendChild(el('span', 'ap-naoofi', 'não oficial'));
-            if (UPDATES.indexOf(p.id) >= 0) nome.appendChild(el('span', 'ap-badge upd', 'ATUALIZAÇÃO'));
+            if (p.oficial) nome.appendChild(el('span', 'ap-ofi', t('oficial')));
+            else nome.appendChild(el('span', 'ap-naoofi', t('nao_oficial')));
+            if (UPDATES.indexOf(p.id) >= 0) nome.appendChild(el('span', 'ap-badge upd', t('atualização')));
             info.appendChild(nome);
             info.appendChild(el('div', 'ap-desc',
                 (p.descricao || '') + (p.autor ? '  ·  ' + p.autor : '') + '  ·  v' + p.versao));
 
             var sw = el('div', 'ap-sw' + (on ? ' on' : ''));
-            sw.title = on ? 'Desligar' : 'Ligar';
+            sw.title = on ? t('desligar') : t('ligar');
             sw.onclick = function () {
                 var novo = !(LIGADOS[p.id] !== false);
                 LIGADOS[p.id] = novo;
-                ipc('ligar', { id: p.id, v: novo ? '1' : '0' })
+                ipc('plugins_ligar', { id: p.id, ligado: novo })
                     .then(function () { desenhar(); })
                     .catch(function (e) { msg(String(e), 'erro'); });
             };
             linha.appendChild(info);
 
             if (UPDATES.indexOf(p.id) >= 0) {
-                var bt = el('button', 'ap-btn-mini', 'Atualizar');
+                var bt = el('button', 'ap-btn-mini', t('atualizar'));
                 bt.onclick = function () {
                     bt.disabled = true; bt.textContent = '...';
-                    ipc('atualizar', { id: p.id })
+                    ipc('plugins_atualizar', { id: p.id })
                         .then(function () {
-                            return Promise.all([carregar(), ipc('updates')]);
+                            return Promise.all([carregar(), ipc('plugins_updates')]);
                         })
                         .then(function (r) {
                             UPDATES = r[1] || [];
-                            msg('Plugin atualizado.', 'ok');
+                            msg(t('ms_atualizado'), 'ok');
                             return carregar();
                         })
                         .then(desenhar)
-                        .catch(function (e) { msg(String(e), 'erro'); bt.disabled = false; bt.textContent = 'Atualizar'; });
+                        .catch(function (e) { msg(String(e), 'erro'); bt.disabled = false; bt.textContent = t('atualizar'); });
                 };
                 linha.appendChild(bt);
             }
@@ -520,22 +520,22 @@
             if (er) info.appendChild(er);
 
             if (p.tem_backup) {
-                var rev = el('button', 'ap-btn-mini', 'Voltar p/ v' + (p.versao_anterior || '?'));
-                rev.title = 'Reverter para a versão anterior';
+                var rev = el('button', 'ap-btn-mini', t('voltar') + (p.versao_anterior || '?'));
+                rev.title = t('att_p');
                 rev.onclick = function () {
                     rev.disabled = true;
-                    ipc('reverter', { id: p.id })
-                        .then(function () { msg('Revertido.', 'ok'); return carregar(); })
+                    ipc('plugins_reverter', { id: p.id })
+                        .then(function () { msg(t('revertido'), 'ok'); return carregar(); })
                         .then(desenhar)
                         .catch(function (e) { msg(String(e), 'erro'); rev.disabled = false; });
                 };
                 linha.appendChild(rev);
             }
-            var rm = el('button', 'ap-btn-mini', 'Remover');
+            var rm = el('button', 'ap-btn-mini', t('remover'));
             rm.onclick = function () {
-                ipc('remover', { id: p.id }).then(function () {
+                ipc('plugins_remover', { id: p.id }).then(function () {
                     delete LIGADOS[p.id];
-                    msg('Removido.', 'ok');
+                    msg(t('ms_removido'), 'ok');
                     return carregar();
                 }).then(desenhar).catch(function (e) { msg(String(e), 'erro'); });
             };
@@ -543,52 +543,63 @@
 
             box.appendChild(linha);
         }
-        if (!visiveis) box.appendChild(el('div', 'ap-vazio', 'Nada encontrado para "' + termo + '".'));
+        if (!visiveis) box.appendChild(el('div', 'ap-vazio', t('nada_encontrado') + ' "' + termo + '".'));
         return box;
     }
 
     function desenharCatalogo() {
         var box = el('div', 'ap-secao');
-        box.appendChild(el('h4', null, 'Catálogo oficial'));
+        box.appendChild(el('h4', null, t('catalogo') + ' (' + catalogo.length + ')'));
         if (!catalogo.length) {
-            box.appendChild(el('div', 'ap-vazio', 'Catálogo vazio ou indisponível offline.'));
+            box.appendChild(el('div', 'ap-vazio', t('vazio_cat')));
             return box;
         }
         var norm = termo.toLowerCase().trim();
-        var tem = function (c) {
-            return !norm || (c.nome + ' ' + (c.descricao || '')).toLowerCase().indexOf(norm) >= 0;
-        };
+        var grid = el('div', 'ap-grid');
+        var achou = 0;
         for (var i = 0; i < catalogo.length; i++) {
             var c = catalogo[i];
-            if (!tem(c)) continue;
+            if (norm && (c.nome + ' ' + (c.descricao || '')).toLowerCase().indexOf(norm) < 0) continue;
+            achou++;
             var jaTem = instalado.some(function (p) { return p.id === c.id; });
-            var linha = el('div', 'ap-linha');
-            var info = el('div', 'ap-info');
-            var nome = el('div', 'ap-nome');
-            nome.appendChild(document.createTextNode(c.nome));
-            nome.appendChild(el('span', 'ap-ofi', 'oficial'));
-            info.appendChild(nome);
-            info.appendChild(el('div', 'ap-desc', (c.descricao || '') + '  ·  v' + c.versao));
-            linha.appendChild(info);
-            var bt = el('button', 'ap-btn-mini', jaTem ? 'Instalado' : 'Instalar');
-            if (jaTem) bt.disabled = true;
+
+            var card = el('div', 'ap-card');
+            var topo = el('div', 'ap-card-topo');
+            topo.appendChild(el('div', 'ap-icone', (c.nome || '?').charAt(0).toUpperCase()));
+            var info = el('div', 'ap-card-info');
+            info.appendChild(el('div', 'ap-card-nome', c.nome || c.id));
+            info.appendChild(el('div', 'ap-card-ver', 'v' + (c.versao || '?') + (c.autor ? ' · ' + c.autor : '')));
+            topo.appendChild(info);
+            card.appendChild(topo);
+            card.appendChild(el('div', 'ap-card-desc', c.descricao || ''));
+
+            var pe = el('div', 'ap-card-pe');
+            var bt = el('button', 'ap-btn-mini', jaTem ? t('instalado') : t('instalar'));
+            if (jaTem) { bt.disabled = true; bt.style.opacity = '.55'; }
             bt.onclick = function () {
-                bt.disabled = true;
-                ipc('analisar', { u: c.url })
+                bt.disabled = true; bt.textContent = '...';
+                ipc('plugins_analisar', { url: c.url })
                     .then(function (an) { return confirmarInstalar(c.nome, an, c.url); })
                     .then(function (ok) { return ok ? carregar().then(desenhar) : null; })
-                    .catch(function (e) { msg(String(e), 'erro'); bt.disabled = false; bt.textContent = 'Instalar'; });
+                    .catch(function (e) { msg(String(e), 'erro'); bt.disabled = false; bt.textContent = t('instalar'); });
             };
-            linha.appendChild(bt);
-            box.appendChild(linha);
+            pe.appendChild(bt);
+            pe.appendChild(el('span', 'ap-ofi', t('oficial')));
+            card.appendChild(pe);
+            grid.appendChild(card);
         }
+        if (!achou) {
+            box.appendChild(el('div', 'ap-vazio', t('nada') + ' "' + termo + '".'));
+            return box;
+        }
+        box.appendChild(grid);
         return box;
     }
 
     function desenhar() {
         painel.innerHTML = '';
         var topo = el('div', 'ap-topo');
-        topo.appendChild(el('h2', null, 'Plugins'));
+        topo.appendChild(el('h2', null, t('plugins')));
         var x = el('button', 'ap-x', '\u00d7');
         x.onclick = fechar;
         topo.appendChild(x);
@@ -598,9 +609,9 @@
         var stats = el('div', 'ap-stats');
         var ligar = 0;
         for (var k in LIGADOS) if (LIGADOS[k] !== false) ligar++;
-        stats.appendChild(stat('instalados', String(instalado.length)));
-        stats.appendChild(stat('ativos', String(ligar)));
-        stats.appendChild(stat('no catálogo', String(catalogo.length)));
+        stats.appendChild(stat(t('stats_inst'), String(instalado.length)));
+        stats.appendChild(stat(t('stats_ativos'), String(ligar)));
+        stats.appendChild(stat(t('stats_cat'), String(catalogo.length)));
         painel.appendChild(stats);
 
         // busca
@@ -608,7 +619,7 @@
         busca.innerHTML = '<svg viewBox="0 0 24 24"><path d="M18.7 19.3a7 7 0 1 0-1.4-1.4l4.3 4.3-1.4 1.4-4.3-4.3zM12 16a4 4 0 1 1 0-8 4 4 0 0 1 0 8z"/></svg>';
         var inp = el('input');
         inp.type = 'search';
-        inp.placeholder = 'Buscar plugins...';
+        inp.placeholder = t('busca');
         inp.value = termo;
         inp.oninput = function () { termo = inp.value; desenhar(); setTimeout(function () { var n = painel.querySelector('.ap-busca input'); if (n) { n.focus(); n.setSelectionRange(n.value.length, n.value.length); } }, 0); };
         busca.appendChild(inp);
@@ -617,17 +628,17 @@
         painel.appendChild(corpo);
 
         var add = el('div', 'ap-secao');
-        add.appendChild(el('h4', null, 'Adicionar plugin'));
+        add.appendChild(el('h4', null, t('add')));
         var linhaUrl = el('div', 'ap-linha');
         var inp2 = el('input');
-        inp2.placeholder = 'URL de um plugin (.js) — não oficial';
+        inp2.placeholder = t('url');
         inp2.className = 'ap-input';
-        var b = el('button', 'ap-btn-mini', 'Instalar');
+        var b = el('button', 'ap-btn-mini', t('instalar'));
         b.onclick = function () {
             var u = inp2.value.trim();
             if (!u) return;
             b.disabled = true;
-            ipc('analisar', { u: u })
+            ipc('plugins_analisar', { url: u })
                 .then(function (an) {
                     var partes = u.split('/');
                     var nome = partes[partes.length - 1] || 'plugin';
@@ -648,18 +659,24 @@
         painel.appendChild(m);
 
         var rodape = el('div', 'ap-rodape');
-        var rs = el('div', 'ap-rodape-txt', 'Sistema de plugins ' + (versaoSistema || '?'));
+        var rs = el('div', 'ap-rodape-txt', t('versao') + ' ' + (versaoSistema || '?'));
         rodape.appendChild(rs);
-        var sair = el('button', 'ap-btn-mini', 'Desinstalar sistema');
+        var sair = el('button', 'ap-btn-mini', t('desinstalar'));
         sair.onclick = function () {
-            if (!confirm('Desinstalar o sistema de plugins?\n\nOs plugins já instalados continuam nos arquivos, mas o painel deixa de funcionar até você instalar de novo.')) return;
-            ipc('sistemaRemover').then(function () { fechar(); }).catch(function (e) { msg(String(e), 'erro'); });
+            if (!confirm(t('desinstalar_titulo') + '\n\n' + t('desinstalar_txt'))) return;
+            ipc('plugins_sistema_remover').then(function () { fechar(); }).catch(function (e) { msg(String(e), 'erro'); });
         };
         rodape.appendChild(sair);
         painel.appendChild(rodape);
     }
 
-    var NOME_PERM = {
+    var NOME_PERM = (IDIOMA === 'en') ? {
+        dom: 'Read and change the page',
+        rede: 'Make requests to the internet',
+        armazenamento: 'Store data on your computer',
+        notificacoes: 'Show notifications',
+        captura: 'Capture screen or audio'
+    } : {
         dom: 'Ler e alterar a página',
         rede: 'Fazer requisições para a internet',
         armazenamento: 'Guardar dados no seu computador',
@@ -674,9 +691,9 @@
         var rotina = ['dom'];
 
         if (pedidas.length) {
-            box.appendChild(el('p', 'ap-perm-r', 'Este plugin pede acesso a:'));
+            box.appendChild(el('p', 'ap-perm-r', t('pede_acesso')));
         } else {
-            box.appendChild(el('p', 'ap-perm-r', 'Este plugin só mexe na página do Discord.'));
+            box.appendChild(el('p', 'ap-perm-r', t('so_pagina')));
         }
         Object.keys(NOME_PERM).forEach(function (k) {
             var tem = pedidas.indexOf(k) >= 0;
@@ -690,7 +707,7 @@
         });
 
         (an.avisos || []).forEach(function (a) {
-            box.appendChild(el('div', 'ap-aviso', '<b>Atenção:</b> ' + a));
+            box.appendChild(el('div', 'ap-aviso', '<b>' + t('aviso') + ':</b> ' + a));
         });
         (an.desconhecidas || []).forEach(function (d) {
             box.appendChild(el('div', 'ap-aviso',
@@ -705,14 +722,15 @@
         return new Promise(function (resolve) {
             painel.innerHTML = '';
             var topo = el('div', 'ap-topo');
-            topo.appendChild(el('h2', null, 'Instalar plugin'));
+            topo.appendChild(el('h2', null, t('instalar_titulo')));
             var x = el('button', 'ap-x', '\u00d7');
             x.onclick = function () { resolve(false); fechar(); };
             topo.appendChild(x);
             painel.appendChild(topo);
 
             var corpo = el('div', 'ap-corpo');
-            corpo.appendChild(el('p', null, '<b style="color:#f2f3f5">' + nome + '</b> quer instalar. O que ele faz:'));
+            corpo.appendChild(el('p', null,
+                '<b style="color:#f2f3f5">' + nome + '</b> ' + t('quer_instalar')));
             corpo.appendChild(blocoPermissoes(an || {}));
             painel.appendChild(corpo);
 
@@ -720,14 +738,14 @@
             painel.appendChild(m);
 
             var acoes = el('div', 'ap-acoes');
-            var nao = el('button', 'ap-btn2 sec', 'Cancelar');
+            var nao = el('button', 'ap-btn2 sec', t('cancel'));
             nao.onclick = function () { resolve(false); fechar(); };
             var sim = el('button', 'ap-btn2', 'Instalar');
             sim.onclick = function () {
                 sim.disabled = true; sim.textContent = 'Instalando...';
-                ipc('instalarUrl', { url: url })
+                ipc('plugins_instalar_url', { url: url })
                     .then(function (r) {
-                        msg('Instalado: ' + r.nome, 'ok');
+                        msg(t('instalado_ok') + r.nome, 'ok');
                         setTimeout(function () { fechar(); }, 500);
                         return r;
                     })
@@ -764,14 +782,14 @@
         msg('Carregando...');
         Promise.all([
             carregar(),
-            ipc('updates').catch(function () { return []; }),
-            ipc('sistemaStatus').catch(function () { return {}; })
+            ipc('plugins_updates').catch(function () { return []; }),
+            ipc('plugins_sistema_status').catch(function () { return {}; })
         ]).then(function (r) {
             UPDATES = r[1] || [];
             if (r[2] && r[2].versao) versaoSistema = r[2].versao;
             // estado ligado/desligado de cada plugin
             return Promise.all(instalado.map(function (p) {
-                return ipc('estaLigado', { id: p.id })
+                return ipc('plugins_esta_ligado', { id: p.id })
                     .catch(function () { return true; })
                     .then(function (v) { LIGADOS[p.id] = v; });
             }));
@@ -858,8 +876,12 @@
     }
 
     // entra em cena assim que o app injeta este arquivo
-    if (document.body) garantirBotao();
-    else document.addEventListener('DOMContentLoaded', garantirBotao);
+    function entrar() {
+        var p = window.__amendPainel;
+        if (p && p.botao) p.botao();
+    }
+    if (document.body) entrar();
+    else document.addEventListener('DOMContentLoaded', entrar);
 
     // Executa assim que o app do Discord existir: plugin que procura no DOM
     // no topo do script rodaria antes da interface existir.
