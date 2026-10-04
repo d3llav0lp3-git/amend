@@ -1,0 +1,6 @@
+{
+  "nome": "Sistema de Plugins do Amend",
+  "versao": "2.0.0",
+  "arquivo": "amend-plugins.js",
+  "descricao": "Runtime do sistema de plugins: painel, busca, ativar/desativar e instalar."
+}

@@ -1,0 +1,15 @@
+/* Tema Claro — troca as cores do Discord pelo CSS, sem script. */
+:root {
+  --background-primary: #f7f8fa;
+  --background-secondary: #e9ebef;
+  --background-tertiary: #dcdfe4;
+}
+[class*="chatContent"], [class*="chatWrapper"] { background: #ffffff !important; }
+[class*="sidebar"], nav[class*="guilds"] { background: #e9ebef !important; }
+[class*="chat"] [class*="messageListItem"] { color: #2e3338 !important; }
+[class*="chat"] [class*="timestamp"] { color: #8a9099 !important; }
+[class*="chat"] [class*="mentions"] { background: rgba(240, 178, 50, .18) !important; }
+[class*="chat"] [class*="buttons"] > [class*="button"] {
+  background: #f2f4f7 !important; border-radius: 8px !important;
+}
+[class*="popover"], [class*="modal"] { background: #ffffff !important; }

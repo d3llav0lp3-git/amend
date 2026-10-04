@@ -1,0 +1,19 @@
+[
+  {
+    "id": "exportar-chat",
+    "nome": "Exportar Chat",
+    "descricao": "Salva o histórico visível do canal em .txt, .json ou .csv",
+    "autor": "d3llav0lp3",
+    "versao": "1.0.0",
+    "url": "https://raw.githubusercontent.com/d3llav0lp3-git/amend/main/plugins/exportar-chat.js"
+  },
+  {
+    "id": "tema-claro",
+    "nome": "Tema Claro",
+    "descricao": "Tema claro para o Discord. CSS puro, sem script.",
+    "autor": "d3llav0lp3",
+    "versao": "1.0.0",
+    "url": "https://raw.githubusercontent.com/d3llav0lp3-git/amend/main/plugins/tema-claro.js",
+    "css_url": "https://raw.githubusercontent.com/d3llav0lp3-git/amend/main/plugins/css/tema-claro.css"
+  }
+]
